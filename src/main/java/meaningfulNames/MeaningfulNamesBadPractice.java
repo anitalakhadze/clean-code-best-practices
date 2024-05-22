@@ -7,41 +7,53 @@ public class MeaningfulNamesBadPractice {
 
     static class Handler {
 
-        private final String pg;
-        private final Map<String, Double> txHist;
+        private static final double MAX_AMOUNT = 100.0;
 
-        public Handler(String pg) {
-            this.pg = pg;
-            this.txHist = new HashMap<>();
+        private final String provider;
+        private final Map<String, Double> transactions;
+
+        public Handler(String provider) {
+            this.provider = provider;
+            this.transactions = new HashMap<>();
         }
 
-        public void process(String cName, double amt) {
-            System.out.println("Pmt process $" + amt + " for customer " + cName + " via " + pg);
-            txHist.put(cName, txHist.getOrDefault(cName, 0.0) + amt);
+        public void pay(String customerName, double amount) {
+            System.out.println("Pmt process $" + amount + " for customer " + customerName + " via " + provider);
+            check(amount);
+            transactions.put(customerName, transactions.getOrDefault(customerName, 0.0) + amount);
         }
 
-        public void refund(String cName, double amt) {
-            System.out.println("Refund $" + amt + " for customer " + cName);
-            double cBal = txHist.getOrDefault(cName, 0.0);
-            if (cBal >= amt) {
-                txHist.put(cName, cBal - amt);
-            } else {
-                System.out.println("Insufficient balance to refund.");
+        public void check(double amount) {
+            if (amount > MAX_AMOUNT) {
+                throw new RuntimeException("Cannot process more than " + MAX_AMOUNT + " per transaction");
             }
         }
 
-        public void generateReceipt(String cName) {
-            double total = txHist.getOrDefault(cName, 0.0);
-            System.out.println("Generating receipt for customer " + cName + " for total $" + total);
+        public void returnBack(String customerName, double amount) {
+            System.out.println("Refund $" + amount + " for customer " + customerName);
+            double currentAmount = transactions.getOrDefault(customerName, 0.0);
+            checkEnoughAmount(currentAmount, amount);
+            transactions.put(customerName, currentAmount - amount);
+        }
+
+        public void checkEnoughAmount(double currentAmount, double amount) {
+            if (currentAmount < amount) {
+                throw new RuntimeException("Insufficient balance to refund.");
+            }
+        }
+
+        public void getReceipt(String customerName) {
+            double total = transactions.getOrDefault(customerName, 0.0);
+            System.out.println("Generating receipt for customer " + customerName + " for total $" + total);
         }
 
         public static void main(String[] args) {
             Handler ph = new Handler("Stripe");
-            ph.process("Alice", 100.0);
-            ph.process("Bob", 150.0);
-            ph.refund("Alice", 50.0);
-            ph.generateReceipt("Alice");
-            ph.generateReceipt("Bob");
+            ph.pay("Alice", 100.0);
+            ph.pay("Bob", 150.0);
+            ph.returnBack("Alice", 50.0);
+            ph.getReceipt("Alice");
+            ph.getReceipt("Bob");
         }
     }
 

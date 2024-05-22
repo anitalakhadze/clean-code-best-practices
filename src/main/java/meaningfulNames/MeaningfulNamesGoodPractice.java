@@ -7,6 +7,8 @@ public class MeaningfulNamesGoodPractice {
 
     static class PaymentHandler {
 
+        private static final double MAX_TRANSACTION_AMOUNT = 100.0;
+
         private final String paymentGateway;
         private final Map<String, Double> transactionHistory;
 
@@ -17,16 +19,26 @@ public class MeaningfulNamesGoodPractice {
 
         public void processPayment(String customerName, double amount) {
             System.out.println("Processing payment of $" + amount + " for customer " + customerName + " via " + paymentGateway);
+            validateTransactionAmount(amount);
             transactionHistory.put(customerName, transactionHistory.getOrDefault(customerName, 0.0) + amount);
+        }
+
+        public void validateTransactionAmount(double amount) {
+            if (amount > MAX_TRANSACTION_AMOUNT) {
+                throw new RuntimeException("Cannot process more than 100 per transaction");
+            }
         }
 
         public void refundPayment(String customerName, double amount) {
             System.out.println("Refunding $" + amount + " for customer " + customerName);
             double currentBalance = transactionHistory.getOrDefault(customerName, 0.0);
-            if (currentBalance >= amount) {
-                transactionHistory.put(customerName, currentBalance - amount);
-            } else {
-                System.out.println("Insufficient balance to refund.");
+            validateSufficientBalanceForRefund(currentBalance, amount);
+            transactionHistory.put(customerName, currentBalance - amount);
+        }
+
+        public void validateSufficientBalanceForRefund(double currentBalance, double amount) {
+            if (currentBalance < amount) {
+                throw new RuntimeException("Insufficient balance to refund.");
             }
         }
 
