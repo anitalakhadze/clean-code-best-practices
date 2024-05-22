@@ -7,37 +7,33 @@ public class SingleResponsibilityGoodPractice {
     }
 
     static class Employee {
-
         private String name;
         private String role;
 
-        // Methods for managing employee data
-        public void saveEmployee(Employee employee) {
-            // Save employee data to database
+        public void saveEmployee(SingleResponsibilityBadPractice.Employee employee) {
+            System.out.println("Saving employee data to database");
         }
 
-        public void updateEmployee(Employee employee) {
-            // Update employee data in database
+        public void updateEmployee(SingleResponsibilityBadPractice.Employee employee) {
+            System.out.println("Updating employee data in database");
         }
 
-        public void deleteEmployee(Employee employee) {
-            // Delete employee data from database
+        public void deleteEmployee(SingleResponsibilityBadPractice.Employee employee) {
+            System.out.println("Deleting employee data from database");
         }
     }
 
     static class TaskManager {
-
-        // Methods for managing employee tasks
-        public void assignTask(Employee employee, Task task) {
-            // Assign task to employee
+        public void assignTask(Task task) {
+            System.out.println("Assigning task to employee");
         }
 
-        public void completeTask(Employee employee, Task task) {
-            // Mark task as completed by employee
+        public void completeTask(Task task) {
+            System.out.println("Completing task assinged to employee");
         }
 
-        public void cancelTask(Employee employee, Task task) {
-            // Cancel task assigned to employee
+        public void cancelTask(Task task) {
+            System.out.println("Cancelling task assigned to employee");
         }
     }
 
