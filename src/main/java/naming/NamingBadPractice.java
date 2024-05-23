@@ -1,9 +1,9 @@
-package meaningfulNames;
+package naming;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MeaningfulNamesBadPractice {
+public class NamingBadPractice {
 
     static class Handler {
 

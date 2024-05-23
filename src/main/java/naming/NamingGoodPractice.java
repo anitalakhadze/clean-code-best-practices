@@ -1,9 +1,9 @@
-package meaningfulNames;
+package naming;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MeaningfulNamesGoodPractice {
+public class NamingGoodPractice {
 
     static class PaymentHandler {
 
@@ -25,7 +25,7 @@ public class MeaningfulNamesGoodPractice {
 
         public void validateTransactionAmount(double amount) {
             if (amount > MAX_TRANSACTION_AMOUNT) {
-                throw new RuntimeException("Cannot process more than 100 per transaction");
+                throw new RuntimeException("Cannot process more than " + MAX_TRANSACTION_AMOUNT + " per transaction");
             }
         }
 
