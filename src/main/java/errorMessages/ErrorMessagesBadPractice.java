@@ -1,4 +1,4 @@
-package exceptionHandling;
+package errorMessages;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,24 +7,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class ExceptionHandlingGoodPractice {
-
-    private static final Logger logger = Logger.getLogger(ExceptionHandlingGoodPractice.class.getName());
+public class ErrorMessagesBadPractice {
 
     public static void main(String[] args) {
         try {
             readFile("example.txt");
             executeDatabaseQuery("INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com')");
             performGenericOperation();
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "Failed to read file", e);
-        } catch (SQLException e) {
-            logger.log(Level.SEVERE, "Database error occurred", e);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Unexpected error", e);
+            e.printStackTrace();
         }
     }
 
@@ -44,12 +36,12 @@ public class ExceptionHandlingGoodPractice {
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
              Statement statement = connection.createStatement()) {
-             statement.executeUpdate(query);
+            statement.executeUpdate(query);
         }
     }
 
     private static void performGenericOperation() throws Exception {
-        throw new Exception("An unexpected error occurred during a generic operation");
+        throw new Exception("Generic error.");
     }
 
 }

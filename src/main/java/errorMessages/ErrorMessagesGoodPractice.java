@@ -1,4 +1,4 @@
-package exceptionHandling;
+package errorMessages;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,16 +7,24 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class ExceptionHandlingBadPractice {
+public class ErrorMessagesGoodPractice {
+
+    private static final Logger logger = Logger.getLogger(ErrorMessagesGoodPractice.class.getName());
 
     public static void main(String[] args) {
         try {
             readFile("example.txt");
             executeDatabaseQuery("INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com')");
             performGenericOperation();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Failed to read file", e);
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Database error occurred", e);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Unexpected error", e);
         }
     }
 
@@ -36,7 +44,7 @@ public class ExceptionHandlingBadPractice {
 
         try (Connection connection = DriverManager.getConnection(url, user, password);
              Statement statement = connection.createStatement()) {
-            statement.executeUpdate(query);
+             statement.executeUpdate(query);
         }
     }
 
