@@ -1,5 +1,7 @@
 package comments;
 
+import java.util.Objects;
+
 public class CommentsGoodPractice {
 
     /**
@@ -15,7 +17,7 @@ public class CommentsGoodPractice {
         firstName = firstName.trim();
         lastName = lastName.trim();
 
-        if (!middleName.isBlank()) {
+        if (Objects.nonNull(middleName) && !middleName.isBlank()) {
             middleName = middleName.trim();
             return String.format("%s %s %s", firstName, middleName, lastName);
         }
