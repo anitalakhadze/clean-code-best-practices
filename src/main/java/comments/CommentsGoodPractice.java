@@ -2,43 +2,25 @@ package comments;
 
 public class CommentsGoodPractice {
 
-    private double balance;
-
     /**
-     * Initializes the balance with the given amount.
+     * Formats a full name from given first name, middle name, and last name.
+     * The middle name is optional and should be handled appropriately.
      *
-     * @param initialBalance the initial balance
+     * @param firstName  the user's first name
+     * @param middleName the user's middle name (can be null or empty)
+     * @param lastName   the user's last name
+     * @return the formatted full name
      */
-    public CommentsGoodPractice(double initialBalance) {
-        this.balance = initialBalance;
-    }
+    public static String formatFullName(String firstName, String middleName, String lastName) {
+        firstName = firstName.trim();
+        lastName = lastName.trim();
 
-    /**
-     * Adds the specified amount to the balance.
-     *
-     * @param amount the amount to add
-     */
-    public void addToBalance(double amount) {
-        this.balance += amount;
-    }
-
-    /**
-     * Subtracts the specified amount from the balance if sufficient funds are available.
-     *
-     * @param amount the amount to subtract
-     * @throws IllegalArgumentException if amount exceeds balance
-     */
-    public void subtractFromBalance(double amount) {
-        if (amount > this.balance) {
-            throw new IllegalArgumentException("Amount exceeds current balance");
+        if (!middleName.isBlank()) {
+            middleName = middleName.trim();
+            return String.format("%s %s %s", firstName, middleName, lastName);
         }
-        this.balance -= amount;
+
+        return String.format("%s %s", firstName, lastName);
     }
 
-    /**
-     * Prints the current balance to the standard output.
-     */
-    public void printBalance() {
-        System.out.println("Current balance: " + this.balance);
-    }
 }
